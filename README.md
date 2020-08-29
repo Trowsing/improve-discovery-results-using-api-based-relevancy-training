@@ -79,9 +79,9 @@ Follow these steps to setup and run this code pattern. The steps are described i
   cd improve-discovery-results-using-api-based-relevancy-training
   ```
 
-  And open the file named `DiscoveryDetails.py` in edit mode.
+  And open the file named `discovery_details.py` in edit mode.
 
-- Edit file named `DiscoveryDetails.py` and update `apikey`, `url`, `collection_id`, `environment_id` which were noted down in earlier steps. Save the file.
+- Edit file named `discovery_details.py` and update `apikey`, `url`, `collection_id`, `environment_id` which were noted down in earlier steps. Save the file.
 
 ## 3. Annotate Documents
 
@@ -145,9 +145,9 @@ As mentioned previously, in this code pattern we will send queries to Discovery 
 
 ### 4.1 Get results for all the natural language queries
 
-Let us begin with querying discovery and getting results without any additional training. For this make a list of questions based on the dataset/document ingested into Discovery. Ensure that you have atleast 49 questions, to cater to minimum queries required by Discovery for training purose.
+Let us begin with querying discovery and getting results without any additional training. For this make a list of questions based on the dataset/document ingested into Discovery. Ensure that you have atleast 49 questions, to cater to minimum queries required by Discovery for training purposes.
 
-Place all the questions in a text file. Each question must be line separated. In our case the questions are placed in `<Repo Parent Directory>/Questions.txt`. 
+Place all the questions in a text file. Each question must be line separated. In our case the questions are placed in `<Repo Parent Directory>/questions.txt`. 
 
 Install required python modules by running following commands.
 
@@ -157,10 +157,14 @@ pip3 install -r requirements.txt
 
 Let us train Discovery with all these questions/queries. Run the following command
 ```
-python Query.py
+python query.py
 ```
 
-This command queries Discovery for every question appearing in `Questions.txt` file. The command might take a few minutes depending on the number of questions. Results of queries are saved in a file named `<Repo Parent Directory>/training_file.tsv`. It is a `.tsv (Tab Separated Value)` file in the following format:
+This command queries Discovery for every question appearing in `questions.txt` file. The command might take a few minutes depending on the number of questions. Results of queries are saved in a file named `<Repo Parent Directory>/training_file.tsv`. 
+
+> The variable `IDENTIFIER` in `query.py` defines the key of your document that will be written in the `text` column to identify each result returned by the queries.
+
+It is a `.tsv (Tab Separated Value)` file in the following format:
 
 ![TSV Format](./images/tsv-format.png)
 
@@ -194,7 +198,7 @@ Now that the query results are assigned with relevance scores, we need to update
 We will do this by running the following command from cloned repo's parent folder.
 
 ```
-python RelevanceTraining.py
+python relevance_training.py
 ```
 
 >  You might see `ApiException (Error Code: 409)` entries in the logs. You can safely ignore these errors since these errors occur because the training examples were already available. The code will internally delete those training examples and update with new ones.
@@ -210,13 +214,13 @@ Note that the the service uses machine-learning Watson techniques to find signal
 Next, we need to check status of Discovery training. Run the below command to check the status.
 
 ```
-python CheckStatus.py
+python check_status.py
 ```
 
 You will see output similar to
 
 ```
-$ python CheckStatus.py
+$ python check_status.py
 {
   "collection_id": "e0xxxx-xxx-xxxx-xxxx-xxxxxxxx236",
   "name": "Relevance",
